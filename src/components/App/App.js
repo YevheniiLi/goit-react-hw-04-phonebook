@@ -8,7 +8,7 @@ import { useLocalStorage } from 'components/hooks/hooks';
 import { useState } from 'react';
 
 export const App = () => {
-  const [contacts, setContacts] = useLocalStorage('contacts',[]);
+  const [contacts, setContacts] = useLocalStorage('contacts', []);
   const [filter, setFilter] = useState('');
 
   const addNewContact = (values, actions) => {
@@ -43,21 +43,17 @@ export const App = () => {
   const visibleContacts = contacts.filter(contact =>
     contact.name.toLowerCase().includes(normalizedFilter)
   );
-    return (
-      <Phonebook>
-        <h1>Phonebook</h1>
-        <ContactForm value={contacts} onSubmit={addNewContact} />
-        <h2>Contacts</h2>
-        <Filter value={filter} onChange={changeFilter} />
-        <ContactList
-          contacts={visibleContacts}
-          onRemoveClick={deleteContact}
-        />
-        <GlobalStyle />
-      </Phonebook>
-    );
-  }
-
+  return (
+    <Phonebook>
+      <h1>Phonebook</h1>
+      <ContactForm value={contacts} onSubmit={addNewContact} />
+      <h2>Contacts</h2>
+      <Filter value={filter} onChange={changeFilter} />
+      <ContactList contacts={visibleContacts} onRemoveClick={deleteContact} />
+      <GlobalStyle />
+    </Phonebook>
+  );
+};
 
 // Контролируемая форма
 
@@ -66,15 +62,16 @@ export const App = () => {
 
 // import { Component } from 'react';
 // import { Form } from './Form/Form';
+// import {useState} from 'react';
 
-// export class App extends Component {
-//   state = {
-//     contacts: [],
-//     name: '',
-//     number: '',
-//   };
+// export const App = () => {
 
-// handlerFormSubmit = data => {
+// const [contacts, setContacts] = useState([]);
+// const [number, setNumber] = useState('');
+// const [number, setNumber] = useState('');
+
+
+// const handlerFormSubmit = data => {
 //   console.log(data);
 // }
 
@@ -82,7 +79,7 @@ export const App = () => {
 //     return (
 //       <>
 //         <h1>Phonebook</h1>
-//         <Form onSubmit={this.handlerFormSubmit} />
+//         <Form onSubmit={handlerFormSubmit} />
 //       </>
 //     );
 //   }
