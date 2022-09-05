@@ -8,7 +8,7 @@ export const ContactList = ({ contacts, onRemoveClick }) => {
     <ul>
       {contacts.map(({ id, name, number }) => (
         <Box as="li" mb={3} key={id}>
-          <ContactItem key={id}>
+          <ContactItem id={id}>
             <ContactText>{name}: </ContactText>
             <ContactText>{number}</ContactText>
             <ButtonForm type="button" onClick={() => onRemoveClick(id)}>

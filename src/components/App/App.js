@@ -5,10 +5,11 @@ import { nanoid } from 'nanoid';
 import { Filter } from '../Filter/Filter';
 import { Phonebook } from './App.styled';
 import { useLocalStorage } from 'components/hooks/hooks';
+import { useState } from 'react';
 
 export const App = () => {
-  const [contacts, setContacts] = useLocalStorage('contacts', '');
-  const [filter, setFilter] = useLocalStorage('filter', '');
+  const [contacts, setContacts] = useLocalStorage('contacts',[]);
+  const [filter, setFilter] = useState('');
 
   const addNewContact = (values, actions) => {
     const newContact = {
@@ -42,18 +43,21 @@ export const App = () => {
   const visibleContacts = contacts.filter(contact =>
     contact.name.toLowerCase().includes(normalizedFilter)
   );
+    return (
+      <Phonebook>
+        <h1>Phonebook</h1>
+        <ContactForm value={contacts} onSubmit={addNewContact} />
+        <h2>Contacts</h2>
+        <Filter value={filter} onChange={changeFilter} />
+        <ContactList
+          contacts={visibleContacts}
+          onRemoveClick={deleteContact}
+        />
+        <GlobalStyle />
+      </Phonebook>
+    );
+  }
 
-  return (
-    <Phonebook>
-      <h1>Phonebook</h1>
-      <ContactForm value={contacts} onSubmit={addNewContact} />
-      <h2>Contacts</h2>
-      <Filter value={filter} onChange={changeFilter} />
-      <ContactList contacts={visibleContacts} onRemoveClick={deleteContact} />
-      <GlobalStyle />
-    </Phonebook>
-  );
-};
 
 // Контролируемая форма
 

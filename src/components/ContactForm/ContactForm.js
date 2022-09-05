@@ -54,20 +54,23 @@ export const ContactForm = ({ onSubmit }) => {
   );
 };
 
-ContactForm.propTypes = {
+ContactForm.propTypes ={
   onSubmit: PropTypes.func.isRequired,
-};
+}
 
-// Контролируемая форма
+
+// Контролируемая форма + добавил хуки
+
+
 
 // import { Component } from 'react';
 // import { nanoid } from "nanoid"
+// import {useState} from 'react';
 
-// export class Form extends Component {
-//   state = {
-//     name: '',
-//     number: '',
-//   };
+// export const Form = () => {
+//   
+    // const [name, setName] = useState('');
+    // const [number, setNumber] = useState('');
 
 //   nameInputId = nanoid();
 //   numberInputId = nanoid();
@@ -75,13 +78,14 @@ ContactForm.propTypes = {
 //   handleChange = event => {
 //     const { name, value } = event.currentTarget;
 
-//     this.setState({ [name]: value });
+//     setName({ [name]: value });
 //   };
 
 //   handleSubmit = event => {
 //     event.preventDefault();
-//     this.props.onSubmit(this.state);
-//     this.reset();
+//     onSubmit(name, number);
+//     setName('');
+//     setNumber('');
 
 //   };
 
@@ -92,7 +96,7 @@ ContactForm.propTypes = {
 //     })
 // }
 
-//   render() {
+//   
 //     return (
 //       <form onSubmit={this.handleSubmit}>
 //         <label htmlFor={this.nameInputId}>
@@ -126,4 +130,4 @@ ContactForm.propTypes = {
 //       </form>
 //     );
 //   }
-// }
+// 
