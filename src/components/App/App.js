@@ -1,53 +1,23 @@
 import { GlobalStyle } from '../GlobalStyle';
-import { Component } from 'react';
 import { ContactForm } from '../ContactForm/ContactForm';
 import { ContactList } from '../ContactList/ContactList';
 import { nanoid } from 'nanoid';
 import { Filter } from '../Filter/Filter';
 import { Phonebook } from './App.styled';
+import { useLocalStorage } from 'components/hooks/hooks';
 
-export class App extends Component {
-  state = {
-    contacts: [],
-    filter: '',
-  };
+export const App = () => {
+  const [contacts, setContacts] = useLocalStorage('contacts', '');
+  const [filter, setFilter] = useLocalStorage('filter', '');
 
-// Local Storage
-
-  componentDidMount () {
-    console.log('App componentDidMount');
-
-    const contacts = localStorage.getItem('contacts');
-    const parsedContacts = JSON.parse(contacts)
-
-    if (parsedContacts){
-    this.setState({contacts: parsedContacts})
-    }
-  };
-
-  componentDidUpdate(prevProps, prevState) {
-    console.log('App componentDidUpdate');
-
-    if (this.state.contacts !== prevState.contacts) {
-      console.log('Обновились контакты, добавляю контакты в хранилище');
-
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-    }
-  };
-
-
-
-
-
-
-  addNewContact = (values, actions) => {
+  const addNewContact = (values, actions) => {
     const newContact = {
       id: nanoid(),
       name: values.name,
       number: values.number,
     };
     if (
-      this.state.contacts
+      contacts
         .map(contact => {
           return contact.name;
         })
@@ -55,57 +25,37 @@ export class App extends Component {
     ) {
       alert(`${newContact.name} is already in contacts!`);
     } else {
-      this.setState(prevState => {
-        return { contacts: [...prevState.contacts, newContact] };
-      });
+      setContacts([...contacts, newContact]);
       actions.resetForm();
     }
   };
 
-  changeFilter = e => {
-    this.setState({ filter: e.target.value });
+  const changeFilter = e => {
+    setFilter(e.target.value);
   };
 
-  deleteContact = contactId => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
-    }));
+  const deleteContact = contactId => {
+    setContacts(contacts.filter(contact => contact.id !== contactId));
   };
 
+  const normalizedFilter = filter.toLowerCase();
+  const visibleContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(normalizedFilter)
+  );
 
+  return (
+    <Phonebook>
+      <h1>Phonebook</h1>
+      <ContactForm value={contacts} onSubmit={addNewContact} />
+      <h2>Contacts</h2>
+      <Filter value={filter} onChange={changeFilter} />
+      <ContactList contacts={visibleContacts} onRemoveClick={deleteContact} />
+      <GlobalStyle />
+    </Phonebook>
+  );
+};
 
-
-
-
-
-
-
-  render() {
-    const { contacts, filter } = this.state;
-    const normalizedFilter = filter.toLowerCase();
-    const visibleContacts = contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normalizedFilter)
-    );
-
-    return (
-      <Phonebook>
-        <h1>Phonebook</h1>
-        <ContactForm value={this.state} onSubmit={this.addNewContact} />
-        <h2>Contacts</h2>
-        <Filter value={filter} onChange={this.changeFilter} />
-        <ContactList
-          contacts={visibleContacts}
-          onRemoveClick={this.deleteContact}
-        />
-        <GlobalStyle />
-      </Phonebook>
-    );
-  }
-}
-
-
-
-// Контролируемая форма 
+// Контролируемая форма
 
 // import { GlobalStyle } from "./GlobalStyle";
 // import { Box } from "./Box";
@@ -120,11 +70,9 @@ export class App extends Component {
 //     number: '',
 //   };
 
-
 // handlerFormSubmit = data => {
 //   console.log(data);
 // }
-
 
 //   render() {
 //     return (

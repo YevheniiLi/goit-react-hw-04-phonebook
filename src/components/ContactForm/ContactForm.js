@@ -54,14 +54,11 @@ export const ContactForm = ({ onSubmit }) => {
   );
 };
 
-ContactForm.propTypes ={
+ContactForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
-}
-
+};
 
 // Контролируемая форма
-
-
 
 // import { Component } from 'react';
 // import { nanoid } from "nanoid"
